@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Training Blockchain</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI Training Coin <span class="header-highlight">(ATC)</span></h1>
+            <p>Contribua com o treinamento da IA e seja recompensado em cripto.</p>
+        </header>
+
+        <nav>
+            <button class="nav-btn active" data-view="training-view">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.82m5.84-2.56a6 6 0 016.38 8.03l-7.37-7.37m-5.84-2.56a6 6 0 01-5.84-7.38v4.82m5.84 2.56a6 6 0 01-8.03-6.38l7.37 7.37" /></svg>
+                <span>Treinamento</span>
+            </button>
+            <button class="nav-btn" data-view="wallet-view">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m12 0V9" /></svg>
+                <span>Wallet</span>
+            </button>
+            <button class="nav-btn" data-view="blockchain-view">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" /></svg>
+                <span>Blockchain</span>
+            </button>
+            <button class="nav-btn" data-view="ranking-view">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9a9.75 9.75 0 100-13.5h9a9.75 9.75 0 100 13.5zM16.5 18.75L18.75 12l-2.25-6.75" /></svg>
+                <span>Ranking</span>
+            </button>
+        </nav>
+
+        <main>
+            <section id="training-view" class="view active">
+                <h2>Enviar Dados para Treinamento</h2>
+                <form id="training-form">
+                    <div class="form-group">
+                        <label for="prompt">Prompt (A Pergunta ou Comando)</label>
+                        <textarea id="prompt" rows="4" placeholder="Ex: Crie uma função em Python que some dois números."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="response">Resposta (A Resposta Ideal)</label>
+                        <textarea id="response" rows="8" placeholder="Ex: def somar(a, b):&#10;    return a + b"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" /></svg>
+                        <span>Enviar e Minerar</span>
+                    </button>
+                </form>
+                <div id="training-status" class="status-message"></div>
+            </section>
+
+            <section id="wallet-view" class="view">
+                <div class="view-header">
+                    <h2>Sua Wallet de ATC</h2>
+                    <button id="create-wallet-btn" class="btn btn-secondary">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                        <span>Criar Nova Wallet</span>
+                    </button>
+                </div>
+                <div id="wallet-info" class="hidden">
+                    <div class="info-grid">
+                        <div class="info-box balance-box">
+                            <h3>Saldo Atual</h3>
+                            <div class="balance-content">
+                                <span id="wallet-balance">0.00</span> ATC
+                                <button id="refresh-balance-btn" class="btn-icon" title="Atualizar Saldo">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0011.664 0l3.18-3.185m-14.94 0l3.182-3.182a8.25 8.25 0 0111.663 0l3.18 3.185" /></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="info-box">
+                            <h3>Endereço (Chave Pública)</h3>
+                            <div class="key-content">
+                                <p id="wallet-address" class="code-block"></p>
+                                <button class="btn-icon copy-btn" data-target="wallet-address" title="Copiar Endereço"></button>
+                            </div>
+                        </div>
+                         <div class="info-box private-key-box">
+                            <h3>Chave Privada (GUARDE COM SEGURANÇA!)</h3>
+                            <div class="key-content">
+                                <p id="wallet-private-key" class="code-block"></p>
+                                <button class="btn-icon copy-btn" data-target="wallet-private-key" title="Copiar Chave Privada"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="wallet-placeholder">
+                    <p>Crie ou importe uma wallet para ver suas informações.</p>
+                </div>
+            </section>
+
+            <section id="blockchain-view" class="view">
+                 <div class="view-header">
+                    <h2>Explorador da Blockchain</h2>
+                    <button id="refresh-chain-btn" class="btn btn-secondary">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0011.664 0l3.18-3.185m-14.94 0l3.182-3.182a8.25 8.25 0 0111.663 0l3.18 3.185" /></svg>
+                        <span>Atualizar Cadeia</span>
+                    </button>
+                </div>
+                <div id="chain-container"></div>
+            </section>
+
+            <section id="ranking-view" class="view">
+                <div class="view-header">
+                    <h2>Ranking de Contribuidores</h2>
+                     <button id="refresh-ranking-btn" class="btn btn-secondary">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0011.664 0l3.18-3.185m-14.94 0l3.182-3.182a8.25 8.25 0 0111.663 0l3.18 3.185" /></svg>
+                        <span>Atualizar Ranking</span>
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table id="ranking-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Endereço do Contribuidor</th>
+                                <th>Total de ATC Ganhos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <p>ATC Blockchain Interface v2.0</p>
+        </footer>
+    </div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
